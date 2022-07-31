@@ -23,3 +23,9 @@ for i in  range(0,10):
     productList.insert(i,x)
     print(f'товар № {i+1}, цена: {productList[i]} BYN')
 
+# Функция подсчета стоимости оставшихся товаров в магазине (из расчета по 1-му товару)
+def CostOfGoods():
+    c = sum(productList)
+    x = float('{:.2f}'.format(c))
+    return print(c)
+CostOfGoods()
