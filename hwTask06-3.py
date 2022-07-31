@@ -7,7 +7,7 @@ import random
 
 cashDeposit = 0
 productList = []
-shoppingList = []
+shoppingList = ''
 def deposit():
     return print(f'В настоящий момент на депозите {cashDeposit} BYN')
 
@@ -26,6 +26,8 @@ for i in  range(0,10):
 # Функция подсчета стоимости оставшихся товаров в магазине (из расчета по 1-му товару)
 def CostOfGoods():
     c = sum(productList)
-    x = float('{:.2f}'.format(c))
+    c = float('{:.2f}'.format(c))
     return print(c)
-CostOfGoods()
+# CostOfGoods()
+shoppingList = list(map(int, input('Введите номера товаров (через пробел), для помещения их в карзину: ').split()))
+# print(shoppingList)
