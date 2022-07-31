@@ -5,7 +5,10 @@
 # Когда превысили, мы должны получить, сколько успели сделать покупок и сколько осталось денег на карте.
 
 cashDeposit = 0
+def deposit():
+    return print(f'В настоящий момент на депозите {cashDeposit} BYN')
+
 if cashDeposit == 0:
-    print(f'В настоящий момент на депозите {cashDeposit} BYN')
+    deposit()
     cashDeposit = float(input('Пополнить депозит на сумму: '))
-print(f'В настоящий момент на депозите {cashDeposit} BYN')
+deposit()
