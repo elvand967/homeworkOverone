@@ -1,17 +1,11 @@
-# Домашнее задание. Задача №8. Вриант решения 2
+# Домашнее задание. Задача №8. Вриант решения №2
 # Введи список, отсортируй его и оставь только уникальные элементы
 # Примечание: Уникальные элементы - это элементы, которые появляются только один раз в списке
-
-import random
-
-mylist = []
-UniqueElements = []
-for i in range(12):
-    mylist.append(random.randint(2,11))
-mylist.sort()  # сортируем в поряде возрастания
-print(mylist)
-UniqueElements = list(set(mylist))
-# for i in range(len(mylist)):
-#     if mylist.count(mylist[i]) == 1:
-#         UniqueElements.append(mylist[i])
-print(UniqueElements)
+from random import randint
+# создаем список из 12 элементов, с случайными числами от 2 до 11 при помощи генератора списков
+mylist = [randint(2,11) for i in range(12)]
+mylist.sort() # сортируем в порядке возрастания
+print(f'исходный, отсортированный список: {mylist}')
+mylist = list(set(mylist))
+#через множество выбираем только уникальные числа и встроенной функцией list() обрабатываем множество в список
+print(f'уникальные элементы списка:      {mylist}')
