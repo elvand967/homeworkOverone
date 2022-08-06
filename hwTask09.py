@@ -7,3 +7,5 @@ mylist = [randint(0,100) for i in range(7)]
 print(mylist)
 mylist[0] = [1, 2, 3]
 print(mylist)
+x = sum(mylist[0])
+print(x)
