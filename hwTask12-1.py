@@ -11,7 +11,6 @@ for i in number:
         OddN += 1
     else:
         EvenN += 1
-
 if EvenN > OddN:
     print(f'Четных цифр в числе больше, чем нечетных.\nсумма всех цифр числа: {sum(number)}')
 else:
