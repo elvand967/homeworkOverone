@@ -8,7 +8,7 @@ while True:
     #number = list(map(int,input('Введите произвольное 7-значное число: ')))
     number = input('Введите произвольное 7-значное число: ')
     # Контроль ввода
-    if not number.isdigit(): #Состоит ли строка из цифр
+    if not number.isdigit() or int(number[0]) == 0: #Состоит ли строка из цифр, первая цифра не 0
         # winsound.PlaySound("Windows Foreground.wav", winsound.SND_FILENAME) # сигнал winsound об ошибке
         request = input('error! Некорректно введено число, повторить тест? (Y/N): ')
         if request.upper() == 'Y': continue # Str.upper() - Преобразование строки к верхнему регистру
