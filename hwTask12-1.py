@@ -20,14 +20,20 @@ while True:
         else: break
     number = list(map(int,number))
     for i in number:
-        if i % 2: OddN += 1
+        if i == 0: continue
+        elif i % 2: OddN += 1
         else: EvenN += 1
     if EvenN > OddN:
-        print(f'Четных цифр в числе больше, чем нечетных.\nсумма всех цифр числа: {sum(number)}')
-    else:
+        print(f'Четных цифр в числе больше, чем нечетных.\nСумма всех цифр числа: {sum(number)}')
+    elif EvenN < OddN:
         print(f'Нечетных цифр в числе больше, чем четных.\n'
-              f'произведение 1-ой ({number[0]}); 3-ей ({number[2]}); и 6-ой ({number[5]}) '
+              f'Произведение 1-ой ({number[0]}); 3-ей ({number[2]}); и 6-ой ({number[5]}) '
               f'цифры: {(number[0]) * (number[2]) * (number[5])}')
+    else:print(f'Нечетных и четных цифр в числе равное количество.\n'
+              f'Сумма всех цифр числа: {sum(number)}\n'
+              f'Произведение 1-ой ({number[0]}); 3-ей ({number[2]}); и 6-ой ({number[5]}) '
+              f'цифры равно: {(number[0]) * (number[2]) * (number[5])}')
+
     request = input('-------------\nПовторить тест? (Y/N): ')
     if request.upper() == 'Y':
         EvenN = OddN = 0
