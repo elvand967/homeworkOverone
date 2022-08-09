@@ -7,7 +7,7 @@ EvenN = 0 # кол-во четных чисел
 OddN = 0  # кол-во нечетных чисел
 number = list(map(int,input('Введите произвольное 7-значное число: ')))
 for i in number:
-    if int(i) % 2:
+    if i % 2:
         OddN += 1
     else:
         EvenN += 1
