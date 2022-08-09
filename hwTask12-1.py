@@ -11,14 +11,12 @@ while True:
     if not number.isdigit(): #Состоит ли строка из цифр
         # winsound.PlaySound("Windows Foreground.wav", winsound.SND_FILENAME) # сигнал winsound об ошибке
         request = input('error! Некорректно введено число, повторить тест? (Y/N): ')
-        if request == 'Y': continue
-        elif request == 'y': continue
+        if request.upper() == 'Y': continue # Str.upper() - Преобразование строки к верхнему регистру
         else: break
     if len(number)!=7: #количество знаков в числе
         # winsound.PlaySound("Windows Foreground.wav", winsound.SND_FILENAME) # сигнал winsound об ошибке
         request = input('error! Число не 7-значное, повторить тест? (Y/N): ')
-        if request == 'Y': continue
-        elif request == 'y': continue
+        if request.upper() == 'Y': continue
         else: break
     number = list(map(int,number))
     for i in number:
@@ -31,10 +29,7 @@ while True:
               f'произведение 1-ой ({number[0]}); 3-ей ({number[2]}); и 6-ой ({number[5]}) '
               f'цифры: {(number[0]) * (number[2]) * (number[5])}')
     request = input('-------------\nПовторить тест? (Y/N): ')
-    if request == 'Y':
-        EvenN = OddN = 0
-        continue
-    elif request == 'y':
+    if request.upper() == 'Y':
         EvenN = OddN = 0
         continue
     else: break
