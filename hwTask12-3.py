@@ -3,7 +3,6 @@
 # (Пример HjkLM- 1 пара нижнего, 1 пара верхнего),
 # а также сколько всего букв в слове, сколько гласных и согласных.
 import random
-word = ''
 wordList = []
 capitalPairsList = []
 pairsLowercaseList = []
@@ -56,6 +55,24 @@ while True:
           f'{pairsLowercase } строчных пары: {pairsLowercaseList}')
     x = len(word)-notLetter
     print(f'В слове {x} букв')
+    gls = sgl = 0
+    gls_ru = 'ауоыиэяюёе'
+    gls_en = 'aeiouy'
+    spam = ' \|/!@#$%^&*()_-+=~`<>?[]{};:№%"\'.,'
+    # получим строку всех гласных букв русского и английского алфовина,
+    # в том числе в верхнем регистре
+    all_gls = gls_ru + gls_ru.swapcase() + gls_en + gls_en.swapcase()
+    for i in word:
+        if i in all_gls:
+            gls += 1
+            continue
+        elif i in spam:
+            continue
+        elif i.isdigit():  # проверяем Состоит ли строка из цифр
+            continue
+        else:
+            sgl += 1
+    print(f'Гласных букв: {gls}\nСогласных букв: {sgl} ')
     request = input('-------------\nПовторить тест? (Y/N): ')
     if request.upper() == 'Y':
         continue
