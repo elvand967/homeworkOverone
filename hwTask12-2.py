@@ -2,5 +2,11 @@
 # Посчитать, сколько раз встречается определенная цифра(цифра – это от 0 до 9) в списке чисел.
 # Количество введенных чисел в список и искомая цифра задаются с клавиатуры.
 # Числа выбираются рандомно.
-
-
+import random
+DigitGuantity = 0
+NumberDigits = int(input('Введите количество цифр в исходном числе: '))
+DesiredFigure = int(input('Введите искомую цифру (от 0 до 9): '))
+a = int('1' + ('0'*(NumberDigits-1)))
+b = int('9'*NumberDigits)
+Number = random.randrange(a, b)
+print(Number)
