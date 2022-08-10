@@ -1,4 +1,4 @@
-# Домашнее задание Задача №12/1
+# Домашнее задание Задача №12/2
 # Посчитать, сколько раз встречается определенная цифра(цифра – это от 0 до 9) в списке чисел.
 # Количество введенных чисел в список и искомая цифра задаются с клавиатуры.
 # Числа выбираются рандомно.
@@ -14,5 +14,5 @@ Number = int(''.join(map(str, NumberList)))
 for i in NumberList:
     if i == DesiredFigure:
         DigitGuantity += 1
-print(f'В числе {Number} цифра {DesiredFigure} встречается: {DigitGuantity} раз')
+print(f'В числе {Number} цифра {DesiredFigure} встречается: {DigitGuantity} раз(а)')
 
