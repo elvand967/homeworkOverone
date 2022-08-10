@@ -28,6 +28,7 @@ while True:
     pairsLowercaseList.clear()
     capitalPairs = 0    # количество заглавных пар
     pairsLowercase = 0  # количество строчных пар
+    notLetter = 0       # не буквы (кол-во)
     flagP = False # флаг заглавных букв
     flagL = False # флаг строчных букв
     ind = 0
@@ -46,10 +47,17 @@ while True:
                 pairsLowercaseList.append(wordList[ind-1]+wordList[ind])
                 flagL = False
             else: flagL = True
-        elif i.isalpha():
+        else:
             flagP = False
             flagL = False
+            notLetter += 1
         ind +=1
     print(f'{capitalPairs } заглавных пары: {capitalPairsList}\n'
           f'{pairsLowercase } строчных пары: {pairsLowercaseList}')
-
+    x = len(word)-notLetter
+    print(f'В слове {x} букв')
+    request = input('-------------\nПовторить тест? (Y/N): ')
+    if request.upper() == 'Y':
+        continue
+    else: break
+print('Программа завершила работу')
