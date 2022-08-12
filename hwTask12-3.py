@@ -15,7 +15,7 @@ for i in range(97, 123):  # а для a-z это значение находит
 random.shuffle(alphabet_en)  # перемешаем список строчных и заглавных букв
 flagP = False  # флаг заглавных букв
 flagL = False  # флаг строчных букв
-gls = sgl = 0
+
 gls_ru = 'ауоыиэяюёе'
 gls_en = 'aeiouy'
 spam = ' \|/!@#$%^&*()_-+=~`<>?[]{};:№%"\'.,'
@@ -61,6 +61,7 @@ while True:
           f'{pairsLowercase } строчных пары: {pairsLowercaseList}')
     x = len(word)-notLetter
     print(f'В слове {x} букв')
+    gls = sgl = 0
     for i in word:
         if i in all_gls:
             gls += 1
@@ -78,7 +79,6 @@ while True:
         pairsLowercaseList.clear()
         flagP = False  # флаг заглавных букв
         flagL = False  # флаг строчных букв
-        gls = sgl = 0
         continue
     else: break
 print('Программа завершила работу')
