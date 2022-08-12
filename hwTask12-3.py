@@ -9,13 +9,12 @@ pairsLowercaseList = []
 alphabet_en = []
 for i in range(65, 91):  # Значение ASCII A-Z лежит в диапазоне 65-90,
     alphabet_en.append(chr(i))
-# alphabet_en = alphabet_en + alphabet_en.swapcase()
+# alphabet_en.extend(alphabet_en.swapcase())
 for i in range(97, 123):  # а для a-z это значение находится в диапазоне 97 – 122.
     alphabet_en.append(chr(i))
 random.shuffle(alphabet_en)  # перемешаем список строчных и заглавных букв
 flagP = False  # флаг заглавных букв
 flagL = False  # флаг строчных букв
-
 gls_ru = 'ауоыиэяюёе'
 gls_en = 'aeiouy'
 spam = ' \|/!@#$%^&*()_-+=~`<>?[]{};:№%"\'.,'
@@ -27,12 +26,9 @@ while True:
     if request.isdigit(): # запрос из цифр?
         request = int(request)
         wordList = random.choices(alphabet_en, k=request) # генерация случайных значений из списка 'k' раз
-        word = "".join(wordList)
-        print(f'Иследуемое слово: "{word}"')
+        print(f'Иследуемое слово: "{"".join(wordList)}"')
     else:
-        # wordList = request.split() # строку в список строк
         wordList = list(request)
-        word = request
     ind = 0
     capitalPairs = 0  # количество заглавных пар
     pairsLowercase = 0  # количество строчных пар
@@ -59,10 +55,10 @@ while True:
         ind +=1
     print(f'{capitalPairs } заглавных пары: {capitalPairsList}\n'
           f'{pairsLowercase } строчных пары: {pairsLowercaseList}')
-    x = len(word)-notLetter
+    x = len(wordList)-notLetter
     print(f'В слове {x} букв')
     gls = sgl = 0
-    for i in word:
+    for i in wordList:
         if i in all_gls:
             gls += 1
             continue
