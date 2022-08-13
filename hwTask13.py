@@ -4,27 +4,25 @@
 # Предполагается, что элементы списка будут соответствовать правилам задания ключей в словарях.
 import random
 List = []
-
 def fun13(lst):
     return {e: e for e in lst}
 
 while True:
     request = input('Через запятую введите элементы списка,\nили цифрами укажите их количество для автогенерации: ')
+    List.clear()
     if request.find(',')>=0:
         txt = request.replace(" ","") # удалим все пробелы (заменим пробел в строке на пустое значение сохранив в новой переменной)
         List = txt.split(',')         # по разделителю собираем список
         print(f'По принятым аргументам сформирован словарь: {fun13(List)}')
     else:
         alphabet_en = []
-        for i in range(65, 123):  # Значение ASCII A-Z лежит в диапазоне 65-90,a-z находится в диапазоне 97 – 122
-            if i > 90 and i < 97: continue
-            alphabet_en.append(chr(i))
+        for i in range(65, 84):  # Значение ASCII A-Z лежит в диапазоне 65-90,a-z находится в диапазоне 97 – 122
+            n = random.randint(2, 7)
+            alphabet_en.append(chr(i)+chr(i+n//2).lower()+chr(i+n).lower())
         random.shuffle(alphabet_en)  # перемешаем список строчных и заглавных букв
-        #n = random.randint(2,5) # кол-во символов в элементах списка запроса и будущего словаря
-        request = int(request)
+        request = int(request)       # число элементов
         List = random.choices(alphabet_en, k=request)  # генерация случайных значений из списка 'k' раз
         print(f'По сгенерированным аргументам {List}\nсформирован словарь: {fun13(List)}')
-
     request = input('-------------\nПовторить тест? (Y/N): ')
     if request.upper() == 'Y':
         continue
