@@ -27,3 +27,15 @@ songsdict = {
 'Blue Dress': 4.18,
 'Clean': 5.68,
 }
+lst_key = []
+all_time = 0
+new_songsdict = {}
+for key, value in songsdict.items():
+    all_time += value
+    if value > 5:
+        lst_key.append(key + ': ' + str(value))
+    if key.find(' ')== -1:
+        new_songsdict[key] = value
+print(f'время звучания всех песен диска группы Depeche Mode: {all_time}\n'
+      f'песни, время звучаниях которых больше 5 минут: {lst_key}\n'
+      f'песyb, в название которых состоит из одного слова: {new_songsdict}')
