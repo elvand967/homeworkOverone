@@ -16,8 +16,6 @@ while True:
     for k, v in numericaldict.items():
         work *= v
     print(f'Произведение всех значений словаря: {work}')
-    if input('-------------\nПовторить тест? (Y/N): ').upper() == 'Y':
-        continue
-    else:
+    if input('*****\nПовторить тест? (Y/N): ').upper() != 'Y':
         break
 print('Программа завершила работу')
