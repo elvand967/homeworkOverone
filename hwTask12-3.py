@@ -39,14 +39,14 @@ while True:
             if flagP:
                 capitalPairs += 1
                 capitalPairsList.append(wordList[ind-1]+wordList[ind])
-                flagP = False
+                #flagP = False
             else: flagP = True
         elif i.islower():
             flagP = False
             if flagL:
                 pairsLowercase += 1
                 pairsLowercaseList.append(wordList[ind-1]+wordList[ind])
-                flagL = False
+                #flagL = False
             else: flagL = True
         else:
             flagP = False
