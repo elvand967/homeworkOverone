@@ -4,15 +4,15 @@
 import random
 x = random.randint(1,100)
 y = random.randint(1,100)
-# with open('input.txt', 'w') as f_input, open('output.txt', 'w') as f_output:
-#    f_input.write(f'{x} {y}')
-#    f_output.write(f'{x-y}')
-f = open('input.txt', 'w')
-f.write(f'{x} {y}')
-f.close()
-with open('input.txt', 'r') as f_input:
-   mytxt = f_input.readline()
 
-print(mytxt)
+f = open('input.txt', 'w')
+f.write(f'{x} {y}') # 1-ая часть задания
+f.close()
+with open('input.txt', 'r') as f_input, open('output.txt', 'w') as f_output:
+   mylist = f_input.readline().split() # считаем ранее созданную строку файла,
+   # с помощью .split() создадим список с числами по разделителю пробел, пока в формате str
+   mylist = [int(i) for i in mylist] # преобразуем элементы списка в int()
+   f_output.write(f'{mylist[0]-mylist[1]}') # 2-ая часть задания
+
 
 
