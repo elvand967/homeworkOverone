@@ -20,34 +20,36 @@ def ContinueWork():
     else: return True
 NutritionalValue = 'Пищевая ценность на 100 г продукта: '
 Calories = 'Энергетическая ценность (калорийность): '
-Unit = 'Единица измерения: '
+Unit = 'ед.изм.: '
 Price = 'Цена за единицу: '
 PackingWeight = 'Масса упаковки: '
+currency = 'руб.'
+ShoppingBasket = {}
 confectionery = {
-'Пряники «Шоколадный вкус»': [NutritionalValue +'белков - 7.0 г; жиров - 7.0 г; углеводов - 70 г, '+
+'Пряники "Шоколадный вкус"': [NutritionalValue +'белков - 7.0 г; жиров - 7.0 г; углеводов - 70 г, '+
                               Calories + '380 ккал',
-                              Unit + 'упаковка',
-                              Price + '4.50',
+                              'упаковка',
+                              4.50,  # цена за ед.изм.
                               PackingWeight + '300 г.'],
-'Печенье «Буренушка»' : [NutritionalValue +'белков - 7.5 г; жиров - 19.2 г; углеводов - 63.2 г, '+
+'Печенье "Буренушка"' : [NutritionalValue +'белков - 7.5 г; жиров - 19.2 г; углеводов - 63.2 г, '+
                               Calories + '456 ккал',
-                              Unit + 'упаковка',
-                              Price + '0.80',
+                              'упаковка',
+                              0.80, # цена за ед.изм.
                               PackingWeight + '100 г.'],
-'Вафли «Белорусские»' : [NutritionalValue +'белков - 5.5 г; жиров - 34 г; углеводов - 57 г, '+
+'Вафли "Белорусские"' : [NutritionalValue +'белков - 5.5 г; жиров - 34 г; углеводов - 57 г, '+
                               Calories + '550 ккал',
-                              Unit + 'упаковка',
-                              Price + '1.20',
+                              'упаковка',
+                              1.20,  # цена за ед.изм.
                               PackingWeight + '100 г.'],
-'Торт «Спартак»' : [NutritionalValue +'белков - 6.3 г; жиров - 45.2 г; углеводов - 42.1 г, '+
+'Торт "Спартак"' : [NutritionalValue +'белков - 6.3 г; жиров - 45.2 г; углеводов - 42.1 г, '+
                               Calories + '596 ккал',
-                              Unit + 'шт',
-                              Price + '27.03',
+                              'шт',
+                              27.03,  # цена за ед.изм.
                               PackingWeight + '1000 г.'],
-'Вафельный батончик «Milx»':[NutritionalValue +'белков - 5 г; жиров - 33 г; углеводов - 59 г, '+
+'Вафельный батончик "Milx"':[NutritionalValue +'белков - 5 г; жиров - 33 г; углеводов - 59 г, '+
                               Calories + '550 ккал',
-                              Unit + 'шт',
-                              Price + '0.65',
+                              'шт',
+                              0.65,  # цена за ед.изм.
                               PackingWeight + '35 г.']
 }
 print('Добро пожаловать в наш магазин кондитерских изделий!')
@@ -68,7 +70,7 @@ while True:
         else: continue
     elif request == '2':
         for k, v in  confectionery.items():
-            print(f'{k}: {v[2]} руб. {v[1]}')
+            print(f'{k}: {v[2]} {currency} за 1 {v[1]}')
         if not ContinueWork(): break
         else: continue
     elif request == '3':
@@ -81,5 +83,31 @@ while True:
             print(f'{k}: {v}')
         if not ContinueWork(): break
         else: continue
-
+    elif request == '5':
+        while True:
+            print('Наш ассортимент:')
+            for k, v in  confectionery.items():
+                print(f'{k}: {v[2]} {currency} {v[1]}')
+            print('***')
+            if len(ShoppingBasket):
+                print(f'В настоящий момент в козине {len(ShoppingBasket)} товар(а)')
+                for k, v in ShoppingBasket.items():
+                    print(k, v)
+                    print('Цена чека покупок:')
+                    print('Для завершения покупок введите "S" или')
+            else: print('В настоящий момент в козина пуста')
+            NewProduct = input('Укажите через двоеточие ":", название товара и его количество, для добаления в карзину: ')
+            if NewProduct.upper() == 'S':
+                print(f'Товары в карзине покупок: {ShoppingBasket}')
+                payment = input('Оплатить покупки? (Y/N) ')
+                if payment.upper() == 'Y':
+                    break
+            else:
+                Product = NewProduct.split(':')
+                for key,values in confectionery.items():
+                    if key.upper().find(Product[0].upper()) >= 0:
+                        ShoppingBasket[key] = [Product[1], values[1].strip()]
+                    else: print('Указанный товар отсутствует в перечне')
+        # if not ContinueWork(): break
+        # else: continue
 print('Программа завершила свою работу.\nДо свидания! ')
