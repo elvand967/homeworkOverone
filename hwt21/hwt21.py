@@ -28,27 +28,27 @@ ShoppingBasket = {}
 confectionery = {
 'Пряники "Шоколадный вкус"': [NutritionalValue +'белков - 7.0 г; жиров - 7.0 г; углеводов - 70 г, '+
                               Calories + '380 ккал',
-                              'упаковка',
+                              'уп.',
                               4.50,  # цена за ед.изм.
                               PackingWeight + '300 г.'],
 'Печенье "Буренушка"' : [NutritionalValue +'белков - 7.5 г; жиров - 19.2 г; углеводов - 63.2 г, '+
                               Calories + '456 ккал',
-                              'упаковка',
+                              'уп.',
                               0.80, # цена за ед.изм.
                               PackingWeight + '100 г.'],
 'Вафли "Белорусские"' : [NutritionalValue +'белков - 5.5 г; жиров - 34 г; углеводов - 57 г, '+
                               Calories + '550 ккал',
-                              'упаковка',
+                              'уп.',
                               1.20,  # цена за ед.изм.
                               PackingWeight + '100 г.'],
 'Торт "Спартак"' : [NutritionalValue +'белков - 6.3 г; жиров - 45.2 г; углеводов - 42.1 г, '+
                               Calories + '596 ккал',
-                              'шт',
+                              'шт.',
                               27.03,  # цена за ед.изм.
                               PackingWeight + '1000 г.'],
 'Вафельный батончик "Milx"':[NutritionalValue +'белков - 5 г; жиров - 33 г; углеводов - 59 г, '+
                               Calories + '550 ккал',
-                              'шт',
+                              'шт.',
                               0.65,  # цена за ед.изм.
                               PackingWeight + '35 г.']
 }
@@ -91,23 +91,24 @@ while True:
             print('***')
             if len(ShoppingBasket):
                 print(f'В настоящий момент в козине {len(ShoppingBasket)} товар(а)')
+                Sum = 0
                 for k, v in ShoppingBasket.items():
                     print(k, v)
-                    print('Цена чека покупок:')
-                    print('Для завершения покупок введите "S" или')
+                    Sum +=v[2]
             else: print('В настоящий момент в козина пуста')
+            print('Для завершения покупок введите "S" или')
             NewProduct = input('Укажите через двоеточие ":", название товара и его количество, для добаления в карзину: ')
             if NewProduct.upper() == 'S':
                 print(f'Товары в карзине покупок: {ShoppingBasket}')
+                print(f'Цена чека покупок: {Sum} {currency}')
                 payment = input('Оплатить покупки? (Y/N) ')
                 if payment.upper() == 'Y':
+                    ShoppingBasket.clear()
                     break
             else:
                 Product = NewProduct.split(':')
                 for key,values in confectionery.items():
                     if key.upper().find(Product[0].upper()) >= 0:
-                        ShoppingBasket[key] = [Product[1], values[1].strip()]
+                        ShoppingBasket[key] = [Product[1], values[1].strip(),round(values[2]*int(Product[1]),2),currency]
                     else: print('Указанный товар отсутствует в перечне')
-        # if not ContinueWork(): break
-        # else: continue
 print('Программа завершила свою работу.\nДо свидания! ')
