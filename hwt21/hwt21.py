@@ -14,6 +14,7 @@
 # n – выход из программы.
 # Посчитать цену выбранных товаров и сколько товаров осталось в изначальном списке
 # 6. До свидания.
+
 def ContinueWork():
     if input('*****\nПродолжить работу? (Y/N): ').upper() != 'Y':
         return False
@@ -65,7 +66,7 @@ while True:
         break
     elif request == '1':
         for k, v in  confectionery.items():
-            print(f'{k} - {v[0]}')
+            print(f'{k}\t{v[0]}')
         if not ContinueWork(): break
         else: continue
     elif request == '2':
@@ -95,20 +96,22 @@ while True:
                 for k, v in ShoppingBasket.items():
                     print(k, v)
                     Sum +=v[2]
+                print('Для оплаты покупок введите "S" или')
             else: print('В настоящий момент в козина пуста')
-            print('Для завершения покупок введите "S" или')
             NewProduct = input('Укажите через двоеточие ":", название товара и его количество, для добаления в карзину: ')
             if NewProduct.upper() == 'S':
-                print(f'Товары в карзине покупок: {ShoppingBasket}')
-                print(f'Цена чека покупок: {Sum} {currency}')
-                payment = input('Оплатить покупки? (Y/N) ')
-                if payment.upper() == 'Y':
-                    ShoppingBasket.clear()
-                    break
+                if len(ShoppingBasket):
+                    print(f'Товары в карзине покупок: {ShoppingBasket}')
+                    print(f'Цена чека покупок: {Sum} {currency}')
+                    payment = input('Оплатить покупки? (Y/N) ')
+                    if payment.upper() == 'Y':
+                        ShoppingBasket.clear()
+                        break
+                else:
+                    print('В настоящий момент в козина пуста')
             else:
                 Product = NewProduct.split(':')
                 for key,values in confectionery.items():
                     if key.upper().find(Product[0].upper()) >= 0:
                         ShoppingBasket[key] = [Product[1], values[1].strip(),round(values[2]*int(Product[1]),2),currency]
-                    else: print('Указанный товар отсутствует в перечне')
 print('Программа завершила свою работу.\nДо свидания! ')
