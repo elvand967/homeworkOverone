@@ -13,16 +13,3 @@ for i in range(10):
     mylist.append(random.randint(1,100))
 print(f'Сумма чисел списка: {mylist}')
 print(f'ровна: {func(mylist)}')
-
-
-# def fun1(a = 25):
-#     global b
-#     b = 10
-#     return a*b
-# print(fun1()) # !!! без предварительного вызова функции с глобальной переменной,
-#               # далее по коду она (глоб.пер) не видна
-#
-# def fun2(c,e=b):
-#     return c/e
-#
-# print(fun2(int(input(f'Введите любое целое число, для его деления {b}: '))))
