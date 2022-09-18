@@ -22,7 +22,7 @@ class Example():
                 else: self.list_sgls.append(i)
             self.mpn = len(self.list_gls) * len(self.list_sgls)
             print(f'произведение гласных и согласных букв: {self.mpn}')
-            if self.mpn <= len(self.str_test):
+            if self.mpn <= self.len_ex():
                 print(f'гласные буквы: {self.list_gls}')
             else: print(f'coгласные буквы: {self.list_sgls}')
 
@@ -35,7 +35,7 @@ class Example():
                     list_num.append(int(i))
                     self.sum_even_digits += int(i)
             print(f'произведение суммы чётных цифр ({list_num} = {self.sum_even_digits}) на'
-                  ' длину числа: ',self.sum_even_digits * len(self.str_test))
+                  ' длину числа: ',self.sum_even_digits * self.len_ex())
 
         else:
             self.f_test = False
