@@ -12,7 +12,6 @@ class Car():
         self.color = color  # Динамический атрибут (поле)
         Car.car_count += 1
 
-
 new_car = Car('Red',2020)              # легковой автомобиль
 print(new_car.make, new_car.name, new_car.model)     # toyota corolla 2020
 print(new_car.default_color)           # Grey
