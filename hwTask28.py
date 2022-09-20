@@ -27,3 +27,4 @@ print(f'№ {car_c.car_count} | {car_c.make} | {car_c.name}  | {car_c.model} г.
       f'цвет: {car_c.color}  | шины: {car_c.tires}\n')
 
 
+
