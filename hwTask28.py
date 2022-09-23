@@ -26,5 +26,15 @@ car_c = Car()
 print(f'№ {car_c.car_count} | {car_c.make} | {car_c.name}  | {car_c.model} г.в.\n'
       f'цвет: {car_c.color}  | шины: {car_c.tires}\n')
 
-
+# легковой автомобиль
+# № 1 | toyota | corolla  | 2020 г.в.
+# цвет: black  | шины: Kormoran Road Performance 205/55 R16 94V XL
+#
+# легковой автомобиль
+# № 2 | toyota | corolla  | 2020 г.в.
+# цвет: white  | шины: Kormoran Road Performance 205/55 R16 94V XL
+#
+# легковой автомобиль
+# № 3 | toyota | corolla  | 2020 г.в.
+# цвет: red  | шины: DX640 225/40 ZR18 92W XL FR
 
