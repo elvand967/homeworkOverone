@@ -55,20 +55,28 @@ class House():
         print('---------------------------------')
 
 
+
 class Flat(House):
     apartment_number = -1 # шапка ведомости создает дополнительный экземпляр. корректировка (-1)
     default_count_people = None
     default_subsidies = None
+    default_water_meter = None
 
-    def __init__(self, count_people=default_count_people, subsidies = default_subsidies):
+
+    def __init__(self, count_people=default_count_people, subsidies = default_subsidies,
+                 water_meter = default_water_meter):
         super().__init__()
         self.count_people = count_people
         if self.count_people is None:
             self.count_people = random.randint(1, 5)
         self.subsidies = subsidies
         if subsidies is None:
-            self.subsidies = random.choice([True, False])
-            #self.subsidies = bool(random.getrandbits(1)) # более быстрый генератор, но воспринимается сложнее
+            #self.subsidies = random.choice([True, False])
+            self.subsidies = bool(random.getrandbits(1)) # более быстрый генератор, но воспринимается сложнее
+        self.water_meter = water_meter
+        if water_meter is None:
+            self.water_meter = random.choice([True,True,True, False])
+            #self.water_meter = bool(random.getrandbits(1)) # более быстрый генератор, но воспринимается сложнее
         Flat.apartment_number += 1
 
     def info(self):
@@ -81,41 +89,56 @@ class Flat(House):
         print(f'тариф субсидируемый государством: {self.subsidies}')
         print('--------------------------------------------')
 
-class Vedomosti(Flat):
+class Water_supply_record_sheet(Flat):
+    default_water = None
+    default_water_meter = None
 
 
-    def __int__(self):
+    def water(self):
+        pass
+
+    def __int__(self,water = default_water):
         super().__init__()
+        self.water = water
+        if water is None:
+            self.water = self.water()
+
+
+
 
     @staticmethod
     def get_reporting_period():
+        str_month = {1:'Январь', 2:'Февраль', 3:'Март', 4:'Апрель', 5:'Май', 6:'Июнь',
+                     7:'Июль', 8:'Август', 9:'Сентябрь', 10:'Октябрь', 11:'Ноябрь', 12:'Декабрь'}
         current_datetime = datetime.now()
-
         if current_datetime.month != 1:
-            get_period = str(current_datetime.month - 1) + '  ' + str(current_datetime.year) + 'г.'
+            get_month = str_month[current_datetime.month - 1]
+            get_year = str(current_datetime.year) + 'г.'
         else:
-            get_period = '12   ' + str(current_datetime.year - 1) + 'г.'
+            get_month = str_month[12]
+            get_year = str(current_datetime.year -1) + 'г.'
 
-        return get_period
+        return get_month + ' ' + get_year
 
     def info(self):
-        n = 90
+        n = 89
         print('\t\t\tведомость коммунальных платежей за потребленную воду и водоотведение')
         print(f'населенный пункт: {self.locality}')
         print(f'улица: {self.street}')
         print(f'дом: {self.house_number}')
         print(f'отчетный период: {self.get_reporting_period()}\n')
         print('=' * n)
-        print(f'  № кв.\t|\tпроживает\t|\tтариф,\t\t\t|\t')
-        print(f'\t\t|\t(чел.)\t\t|\tсубсидируемый\t|\t')
-        print(f'\t\t|\t\t\t\t|\tгосударством\t|\t')
+        print(f'|\t№\t|\tпроживает\t|\tтариф,\t\t\t|\tналичие\t\t\t|\tобъем\t|\tсумма\t|')
+        print(f'|\tкв.\t|\t(зарег.)\t|\tсубсидируемый\t|\tприборов\t\t|\tводы\t|\t\t\t|')
+        print(f'|\t\t|\tчел.\t\t|\tгосударством\t|\tучеты воды\t\t|\t м3\t\t|\tруб.\t|')
         print('='* n)
         self.apartments = House.get_count_apartments()
         self.objs = [Flat for i in range(self.apartments)]
         for obj in self.objs:
             object = obj()
-            print(f'\t{object.apartment_number}\t|\t\t{object.count_people}\t\t|\t{object.subsidies}\t\t\t|\t"test"')
+            print(f'|\t{object.apartment_number}\t|\t\t{object.count_people}\t\t|\t{object.subsidies}\t\t\t|'
+                  f'\t{object.water_meter}\t\t\t|\t{self.water()}\t|\t"test"\t|')
         print('=' * n)
 
-vedomosti = Vedomosti()
-vedomosti.info()
+ved_water = Water_supply_record_sheet()
+ved_water.info()
