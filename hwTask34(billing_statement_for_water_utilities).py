@@ -17,13 +17,13 @@ import random
 from datetime import datetime
 
 class House():
-    count_apartments = None
     default_street = 'В.Гостинец'
     default_house_number = 124
     default_locality = 'Молодечно'
     default_count_apartments = None
 
-    def __init__(self, street=default_street, house_number=default_house_number, locality=default_locality):
+    def __init__(self, street=default_street, house_number=default_house_number,
+                 locality=default_locality, count_apartments = default_count_apartments):
         self.street = street
         if self.street is None:
             self.street = input('Укажите название улицы: ')
@@ -33,18 +33,19 @@ class House():
         self.locality = locality
         if self.locality is None:
             self.locality = input('Укажите населенный пункт: ')
+        self.count_apartments = count_apartments
+        if self.count_apartments is None:
+            # self.count_apartments = input('Укажите количество квартир в доме: ')
+            self.count_apartments = self.even_generator(4, 16)
 
     @staticmethod
-    def float_generator(start=0.0, end=20.0):  # генератор вещественных чисел (float)
-        n = round(random.uniform(start, end - 1), 2)
-        return n
+    def even_generator(start, end):  # генератор четных чисел int
+        n = random.randint(start, end - 1)
+        return (n % 2 == 0 and n) or n + 1
 
-    @classmethod
-    def get_count_apartments(cls, count_apartments=default_count_apartments):
-        cls.count_apartments = count_apartments
-        if cls.count_apartments is None:
-            cls.count_apartments = even_generator(4, 16)  # генерируем четное количество квартир
-        return cls.count_apartments
+    @staticmethod
+    def float_generator(start=0.0, end=100.0):  # генератор вещественных чисел (float)
+        return round(random.uniform(start, end - 1), 2)
 
     def info(self):
         print(f'Class name: {type(self).__name__}')
@@ -54,22 +55,20 @@ class House():
         print(f'всего квартир: {self.count_apartments}')
         print('---------------------------------')
 
-def even_generator(start, end):  # генератор четных чисел int
-    n = random.randint(start, end - 1)
-    return (n % 2 == 0 and n) or n + 1
-
 class Flat(House):
-    apartment_number = -1  # шапка ведомости создает дополнительный экземпляр. корректировка (-1)
-    default_count_people = None
-    default_subsidies = None
-    default_water_meter = None
-    norm_water_people = 0.8  # м3
-    norm_water_people_subsidies = 0.46  # м3
-    water_price = 2.2222
+    apartment_number = -1  # номер квартиры
+    # шапка ведомости создает дополнительный экземпляр. корректировка (-1)
+    default_count_people = None # прописанно человек
+    default_subsidies = None    # прим. льготный расчет (bool)
+    default_water_meter = None  # наличие счетчиков (bool)
+    default_water = None        # кол-во воды в месяц (bool)
+    norm_water_people = 0.8     # норма чел/сут м3 (float)
+    norm_water_people_subsidies = 0.46
+    water_price = 2.2222              # тариф руб*1м3
     water_price_subsidies = 2.1835
 
     def __init__(self, count_people=default_count_people, subsidies=default_subsidies,
-                 water_meter=default_water_meter):
+                 water_meter=default_water_meter, water=default_water):
         super().__init__()
         self.count_people = count_people
         if self.count_people is None:
@@ -81,22 +80,26 @@ class Flat(House):
         self.water_meter = water_meter
         if water_meter is None:
             self.water_meter = random.choice([True, True, True, False])
+        self.water = water
+        if water is None:
+            # self.water = float(input('Укажите объем использованной воды (м3): '))
+            self.water = self.get_water()
         Flat.apartment_number += 1
 
-    def get_water(self):
+    def get_water(self): #  функция-генератор, получения расчетного объема воды
         if self.water_meter:  # если установлен счетчик воды
-            return format(House.float_generator(), '.2f')
+            return format(self.float_generator(4.0,20.0), '.2f')
         else:  # пока условно число дней в месяце примем 30
-            if self.subsidies:  # если применим льготный тариф
+            if self.subsidies:  # если применен льготный тариф
                 return format(self.count_people * self.norm_water_people_subsidies * 30, '.2f')
-            else:  # если применим тариф обеспечивающий полное возмещение экономически обоснованных затрат
+            else:  # если применен тариф обеспечивающий полное возмещение экономически обоснованных затрат
                 return format(self.count_people * self.norm_water_people * 30, '.2f')
 
-    def get_amount(self):
+    def get_amount(self): #  функция получения суммы счета за воду
         if self.subsidies:  # если применен льготный тариф
-            return format(float(self.get_water()) * self.water_price_subsidies, '.2f')
+            return format(float(self.water) * self.water_price_subsidies, '.2f')
         else:
-            return format(float(self.get_water()) * self.water_price, '.2f')
+            return format(float(self.water) * self.water_price, '.2f')
 
     def info(self):
         print(f'Class name: {type(self).__name__}')
@@ -143,17 +146,18 @@ class Water_supply_record_sheet(Flat):
         print(f'|\tкв.\t|\t(зарег.)\t|\tсубсидируемый\t|\tприборов\t\t|\tводы\t|\t\t\t|')
         print(f'|\t\t|\tчел.\t\t|\tгосударством\t|\tучеты воды\t\t|\t м3\t\t|\tруб.\t|')
         print('=' * n)
-        self.apartments = House.get_count_apartments()
-        self.objs = [Flat for i in range(self.apartments)]
+        self.objs = [Flat for i in range(self.count_apartments)]
         for obj in self.objs:
             object = obj()
             print(f'|\t{object.apartment_number}\t|\t\t{object.count_people}\t\t|\t{object.subsidies}\t\t\t|'
-                  f'\t{object.water_meter}\t\t\t|\t{object.get_water()}\t|\t{object.get_amount()}\t|')
+                  f'\t{object.water_meter}\t\t\t|\t{object.water}\t|\t{object.get_amount()}\t|')
         print('=' * n)
         print(f'тариф за воду, обесп. полное возмещение 1м3: {self.water_price} руб.;'
               f' (субсидируемый 1м3: {self.water_price_subsidies} руб.)')
         print(f'норма при отсутствии приборов учета на 1-го чел в сутки: {self.norm_water_people} м3;'
               f' (субсидируемый: {self.norm_water_people_subsidies} м3.)')
+
+
 
 ved_water = Water_supply_record_sheet()
 ved_water.info()
