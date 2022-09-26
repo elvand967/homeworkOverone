@@ -30,7 +30,9 @@ import random
 class Alphabet():
     default_lang = ['en','ru']
     default_letters = None
-    def __init__(self, lang_txt = None, letters = default_letters):
+
+    def __init__(self, lang_txt=None, letters=default_letters):
+    #def __init__(self, lang_txt = "en", letters = default_letters):
         self.lang_txt  = lang_txt
         if self.lang_txt is None:
             self.lang_txt = input(f'Введите язык тестируемого алфавита (варианты {self.default_lang}): ')
@@ -71,9 +73,9 @@ class Alphabet():
     def letters_num(self):
         return len(self.letters)
 
-    def letter_en_control(self, s):
+    def  is_en_letter(self, s):
         if self.lang_txt != 'en':
-            return f'Согласно задания метод контролирует только английский алфавит\n' \
+            return f'Согласно задания метод контролирует только английский алфавит ' \
                    f'Поиск буквы "{s}" отменен.'
         flag = False
         if self.letters.count(s.upper()+s.lower())>0:
@@ -82,15 +84,14 @@ class Alphabet():
         return (flag and f'Искомая буква "{s}" относится к английскому алфавиту') \
                or f'Искомая буква "{s}" не относится к английскому алфавиту.'
 
-    def get_txt(self):
-        if self.lang_txt != 'en':
-            return f'Согласно задания текст только на английском языке\nвывод текста отменен.'
+    @staticmethod
+    def example(letters):
         word_count = random.randint(3, 7) # количество слов в тексте
         txt =  ''
         while word_count:
             n = random.randint(3,6)
             for i in range(n):
-                txt +=  random.choice(self.letters)[1]
+                txt +=  random.choice(letters)[1]
             txt +=' '
             word_count -=1
         txt = (txt.rstrip(' ')+'.').capitalize()
@@ -98,30 +99,49 @@ class Alphabet():
 
 class EngAlphabet(Alphabet):
     import string
+    __letters_num = None
 
-    def __init__(self, letters = string.ascii_lowercase, __letters_num=None):
+    def __init__(self, letters = string.ascii_lowercase):
         super().__init__(lang_txt  = 'en')
         self.letters = letters
+        #EngAlphabet.__letters_num = len(self.letters)
         self.__letters_num = len(self.letters)
-        print(f'В алфавите: {__letters_num} букв (вывод при инициализации)')
 
     def letters_num(self):
         return self.__letters_num
 
+    def  is_en_letter(self, s):
+        if self.letters.count(s.lower())>0:
+            return f'Искомая буква "{s}" относится к английскому алфавиту'
+        else:
+            return f'Искомая буква "{s}" не относится к английскому алфавиту.'
 
+    @staticmethod
+    def example(letters):
+        word_count = random.randint(3, 7) # количество слов в тексте
+        txt =  ''
+        while word_count:
+            n = random.randint(3,6)
+            for i in range(n):
+                txt +=  random.choice(letters)
+            txt +=' '
+            word_count -=1
+        txt = (txt.rstrip(' ')+'.').capitalize()
+        return print(f'Пример текста: "{txt}"')
 
-
-
-# Alph = Alphabet()
-# Alph.print()
-# print(f'Букв в алфавите: {Alph.letters_num()}')
-# # print(Alph.letter_en_control(input('Введите искомую букву: ')))
-# print(Alph.letter_en_control('F'))
-# print(Alph.letter_en_control('Щ'))
-# Alph.get_txt()
+Alph = Alphabet()
+Alph.print()
+print(f'Букв в алфавите: {Alph.letters_num()}')
+# print(Alph.is_en_letter(input('Введите искомую букву: ')))
+print(Alph.is_en_letter('F'))
+print(Alph.is_en_letter('Щ'))
+Alph.example(Alph.letters)
 
 Alph_en = EngAlphabet()
 print(f'Буквы алфавита: {Alph_en.letters}')
 print(f'В алфавите: {Alph_en.letters_num()} (вывод функцией letters_num())')
 print(f'В алфавите: {Alph_en._EngAlphabet__letters_num} букв (внешний вывод private атрибута __letters_num)')
-# print(f'В алфавите: {Alph_en.letters_num()} букв ')
+print(Alph_en.is_en_letter(input('Введите искомую букву: ')))
+print(Alph_en.is_en_letter('F'))
+print(Alph_en.is_en_letter('Щ'))
+Alph_en.example(Alph_en.letters)
