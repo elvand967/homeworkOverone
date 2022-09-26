@@ -25,16 +25,20 @@
 # 5. Проверьте, относится ли буква Щ к английскому алфавиту
 # 6. Выведите пример текста на английском языке
 
+import random
+
 class Alphabet():
     default_lang = ['en','ru']
     default_letters = None
-    def __init__(self, lang = None, letters = default_letters):
-        self.lang  = lang
-        if self.lang is None:
-            self.lang = input(f'Введите язык тестируемого алфавита (варианты {self.default_lang}): ')
+    def __init__(self, lang_txt = None, letters = default_letters):
+        self.lang_txt  = lang_txt
+        if self.lang_txt is None:
+            self.lang_txt = input(f'Введите язык тестируемого алфавита (варианты {self.default_lang}): ')
         self.letters = letters
         if self.letters is None:
-            self.letters = self.generator_alph(self.lang)
+            self.letters = self.generator_alph(self.lang_txt)
+        print(f'------------------------------\n'
+              f'Создан объект класса "{type(self).__name__}"')  # вывод на печать имени класса создоваемого объекта
 
     @staticmethod
     def generator_alph(language):
@@ -58,30 +62,66 @@ class Alphabet():
         # elif  language == 'ru':
         #     for i in range(ord('А'), ord('Я')):
         #         letters.append([chr(i),i])
-        else: letters = 'неизвестный язык'
+        else: letters = 'неизвестный язык.'
         return letters
 
     def print(self):
-        print(f'алфавит: {self.letters}')
+        print(self.letters)
 
     def letters_num(self):
         return len(self.letters)
 
     def letter_en_control(self, s):
-        if self.lang != 'en':
+        if self.lang_txt != 'en':
             return f'Согласно задания метод контролирует только английский алфавит\n' \
-                   f'поиск буквы "{s}" отменен'
+                   f'Поиск буквы "{s}" отменен.'
         flag = False
         if self.letters.count(s.upper()+s.lower())>0:
             flag = True
 
         return (flag and f'Искомая буква "{s}" относится к английскому алфавиту') \
-               or f'Искомая буква "{s}" не относится к английскому алфавиту'
+               or f'Искомая буква "{s}" не относится к английскому алфавиту.'
+
+    def get_txt(self):
+        if self.lang_txt != 'en':
+            return f'Согласно задания текст только на английском языке\nвывод текста отменен.'
+        word_count = random.randint(3, 7) # количество слов в тексте
+        txt =  ''
+        while word_count:
+            n = random.randint(3,6)
+            for i in range(n):
+                txt +=  random.choice(self.letters)[1]
+            txt +=' '
+            word_count -=1
+        txt = (txt.rstrip(' ')+'.').capitalize()
+        return print(f'Пример текста: "{txt}"')
+
+class EngAlphabet(Alphabet):
+    import string
+
+    def __init__(self, letters = string.ascii_lowercase, __letters_num=None):
+        super().__init__(lang_txt  = 'en')
+        self.letters = letters
+        self.__letters_num = len(self.letters)
+        print(f'В алфавите: {__letters_num} букв (вывод при инициализации)')
+
+    def letters_num(self):
+        return self.__letters_num
 
 
-Alph = Alphabet()
-Alph.print()
-print(f'букв в алфавите: {Alph.letters_num()}')
-# print(Alph.letter_en_control(input('Введите искомую букву: ')))
-print(Alph.letter_en_control('F'))
-print(Alph.letter_en_control('Щ'))
+
+
+
+# Alph = Alphabet()
+# Alph.print()
+# print(f'Букв в алфавите: {Alph.letters_num()}')
+# # print(Alph.letter_en_control(input('Введите искомую букву: ')))
+# print(Alph.letter_en_control('F'))
+# print(Alph.letter_en_control('Щ'))
+# Alph.get_txt()
+
+Alph_en = EngAlphabet()
+print(f'Буквы алфавита: {Alph_en.letters}')
+print(f'В алфавите: {Alph_en.letters_num()} (вывод функцией letters_num())')
+print(f'В алфавите: {Alph_en._EngAlphabet__letters_num} букв (внешний вывод private атрибута __letters_num)')
+# print(f'В алфавите: {Alph_en.letters_num()} букв ')
