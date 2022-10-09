@@ -21,12 +21,12 @@ coldgrey = (128, 138, 135)  # тело змейки
 rainbow = {'red': (255, 0, 0), 'orange': (255, 128, 0),
            'yellow': (255, 255, 0), 'green': (0, 128, 0),
            'blue': (0, 0, 255), 'violet': (238, 130, 238)}
-W = 600  # ширина экрана
+L = 600  # ширина экрана
 H = 600  # высота экрана
 
 # определяем середину экрана виджета
 # голову змеюки сюда
-x = W // 2  # координаты по горизонтали
+x = L // 2  # координаты по горизонтали
 y = H // 2  # координаты по вертикали
 x_change = 0
 y_change = 0
@@ -38,6 +38,7 @@ rabbit_line = 0
 n = 0  # счетчик тиков для кролика
 f_rabbit = False  # Флаг кролика
 cardionate_rabbit = ()
+color_rabbit = ()
 f_start = False
 
 # При старте змейку соберу из 4-х элементов:
@@ -68,14 +69,15 @@ def fun_color_generator(color_dictionary):  # ...словарь цветов
     return shape_color  # кортеж (..., ..., ...)
 
 
-# функия генератор кардионат и размеров кролика для передачи в pygame.draw.rect()
+# функия генератор кардионат и размеров кролика и его цвета для передачи в pygame.draw.rect()
 def fun_rabbit():
-    l1 = random.randrange(l, W - l, l)
-    h1 = random.randrange(h + 1, H - (3 * h) + 1, h)
+    l1 = random.randrange(l, L - l, l)
+    h1 = random.randrange((4 * h) + 1, H - (4 * h) + 1, h)
+
     return [l1, h1, l, h]
 
 
-dis = pygame.display.set_mode((W, H))
+dis = pygame.display.set_mode((L, H))
 pygame.display.set_caption("Snake")
 
 game_over = False
@@ -106,7 +108,7 @@ while True:
                 y_change = h
 
     dis.fill(white)
-    pygame.draw.rect(dis, (196, 239, 228), [l, 3 * h, W - (2 * l), H - (4 * h)], 0)
+    pygame.draw.rect(dis, (196, 239, 228), [l, 3 * h, L - (2 * l), H - (4 * h)], 0)
 
     if not game_over:
         x += x_change
@@ -114,7 +116,7 @@ while True:
     else:
         t1 = pygame.font.SysFont('arial', 48)
         txt1 = t1.render("Game over", True, rainbow['red'])
-        dis.blit(txt1, (W // 2 - 100, H // 2 - 90))
+        dis.blit(txt1, (L // 2 - 100, H // 2 - 90))
 
     if f_start:  # начинаем движение
         list_snake.append([rainbow['red'], [x, y, l, h]])
@@ -133,11 +135,12 @@ while True:
             list_snake[i][0] = snake_body_color[0]
 
     # граница поля
-    border = pygame.draw.rect(dis, (35, 137, 111), [l, 3 * h, W - (2 * l), H - (4 * h)], 1)
+    border = pygame.draw.rect(dis, (35, 137, 111), [l, 3 * h, L - (2 * l), H - (4 * h)], 1)
 
-    if not f_rabbit: # если кролика еще нет
-        cardionate_rabbit = fun_rabbit() # генерируем ему новые кардионаты
-        f_rabbit = True # и даем добро на отрисовку
+    if not f_rabbit:  # если кролика еще нет
+        cardionate_rabbit = fun_rabbit()  # генерируем ему новые кардионаты
+        color_rabbit = fun_color_generator(rainbow)
+        f_rabbit = True  # и даем добро на отрисовку
     else:
         # поморгаем кроликом
         n += 1
@@ -145,7 +148,7 @@ while True:
             rabbit_body.reverse()
             rabbit_line = rabbit_body[0]
             n = -3
-        rabbit = pygame.draw.rect(dis, black, cardionate_rabbit, rabbit_line)
+        rabbit = pygame.draw.rect(dis, color_rabbit, cardionate_rabbit, rabbit_line)
 
     for i in range(len(list_snake)):
         if i == len(list_snake) - 1:
