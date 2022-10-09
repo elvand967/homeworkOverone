@@ -11,15 +11,18 @@ import random
 
 pygame.init()
 
-# словарь цветов (color_dictionary)
-cd = {'red': (255, 0, 0), 'orange': (255, 128, 0),
-      'yellow': (255, 255, 0), 'green': (0, 128, 0),
-      'blue': (0, 0, 255), 'violet': (238, 130, 238),
-      'black': (0, 0, 0), 'white': (255, 255, 255),
-      'gray': (128, 128, 128), 'cobaltgreen': (61, 145, 64),
-      'coldgrey': (128, 138, 135)}
-W = 800  # ширина экрана
-H = 500  # высота экрана
+white = (255, 255, 255)
+black = (0, 0, 0)
+gray = (128, 128, 128)
+cobaltgreen = (61, 145, 64)  # тело змейки
+coldgrey = (128, 138, 135)  # тело змейки
+
+# словарь цветов (rainbow - радуга)
+rainbow = {'red': (255, 0, 0), 'orange': (255, 128, 0),
+           'yellow': (255, 255, 0), 'green': (0, 128, 0),
+           'blue': (0, 0, 255), 'violet': (238, 130, 238)}
+W = 600  # ширина экрана
+H = 600  # высота экрана
 
 # определяем середину экрана виджета
 # голову змеюки сюда
@@ -29,9 +32,13 @@ x_change = 0
 y_change = 0
 l = 15  # ширина прямоугольника (квадрата) - елемента тела змейки
 h = 15  # высота прямоугольника (квадрата) -/-
-snake_mouth = [0, 3]  # 3- открыт, 0 - закрыт
+snake_mouth = rabbit_body = [0, l // 5]  # 3- открыт, 0 - закрыт
+snake_body_color = [cobaltgreen, coldgrey]
+rabbit_line = 0
+n = 0  # счетчик тиков для кролика
+f_rabbit = False  # Флаг кролика
+cardionate_rabbit = ()
 f_start = False
-snake_body_color = [cd['cobaltgreen'], cd['coldgrey']]
 
 # При старте змейку соберу из 4-х элементов:
 # - голова красного цвета (эффект открытия/закрытия рта, попробую обеспечить сменой
@@ -50,18 +57,22 @@ snake_body_color = [cd['cobaltgreen'], cd['coldgrey']]
 # что элементы списка (наши составные части змейки) идут от хвоста к голове
 list_snake = []
 for i in range(-3, 1):
-    list_snake.append([cd['red'], [x + (i * l), y, l, h]])
+    list_snake.append([rainbow['red'], [x + (i * l), y - 1, l, h]])
 
 
-# (!!! переделать исключающий цвет на кортеж цветов)функия генератор цветов, котороя в качестве аргументов принимает...
-def f_color_generator(color_dictionary, exclude_color=None):  # словарь цветов и цвет который нужно исключить
-    # словарь цветов (color_dictionary)
-    # color_dictionary = {'red': (255, 0, 0), 'orange': (255, 128, 0),...}
+# функия генератор цветов, котороя в качестве аргументов принимает...
+def fun_color_generator(color_dictionary):  # ...словарь цветов
+    # color_dictionary =rainbow или {'red': (255, 0, 0), 'orange': (255, 128, 0),...}
     list_color = list(color_dictionary)  # преобразуем наш словарь цветов в список ключей типа: ['red','orange',...]
-    if exclude_color is not None:  # если указан цвет для искючения, в виде 'white'...
-        list_color.remove(exclude_color)  # ... удалим его из списка
-    shape_color = cd[random.choice(list_color)]  # генерируем случайный цвет в виде кортежа, пример: (0, 128, 0)
+    shape_color = rainbow[random.choice(list_color)]  # генерируем случайный цвет в виде кортежа, пример: (0, 128, 0)
     return shape_color  # кортеж (..., ..., ...)
+
+
+# функия генератор кардионат и размеров кролика для передачи в pygame.draw.rect()
+def fun_rabbit():
+    l1 = random.randrange(l, W - l, l)
+    h1 = random.randrange(h + 1, H - (3 * h) + 1, h)
+    return [l1, h1, l, h]
 
 
 dis = pygame.display.set_mode((W, H))
@@ -94,33 +105,47 @@ while True:
                 x_change = 0
                 y_change = h
 
-    dis.fill(cd['white'])
-    pygame.draw.rect(dis, (196, 239, 228), [10, 30, W - 20, H - 40], 0)
+    dis.fill(white)
+    pygame.draw.rect(dis, (196, 239, 228), [l, 3 * h, W - (2 * l), H - (4 * h)], 0)
 
     if not game_over:
         x += x_change
         y += y_change
     else:
         t1 = pygame.font.SysFont('arial', 48)
-        txt1 = t1.render("Game over", True, cd['red'])
+        txt1 = t1.render("Game over", True, rainbow['red'])
         dis.blit(txt1, (W // 2 - 100, H // 2 - 90))
 
-    if f_start:
-        list_snake.append([cd['red'], [x, y, l, h]])
+    if f_start:  # начинаем движение
+        list_snake.append([rainbow['red'], [x, y, l, h]])
         list_snake.pop(0)
+
+    # откроем/закроим ротик
+    snake_mouth.reverse()
 
     # раскрасим змейку
     snake_body_color.reverse()
+
     for i in range(len(list_snake) - 1):
         if i % 2:
             list_snake[i][0] = snake_body_color[1]
         else:
             list_snake[i][0] = snake_body_color[0]
 
-    # откроем/закроим ротик
-    snake_mouth.reverse()
+    # граница поля
+    border = pygame.draw.rect(dis, (35, 137, 111), [l, 3 * h, W - (2 * l), H - (4 * h)], 1)
 
-    border = pygame.draw.rect(dis, (35, 137, 111), [10, 30, W - 20, H - 40], 3)
+    if not f_rabbit: # если кролика еще нет
+        cardionate_rabbit = fun_rabbit() # генерируем ему новые кардионаты
+        f_rabbit = True # и даем добро на отрисовку
+    else:
+        # поморгаем кроликом
+        n += 1
+        if n == 3:
+            rabbit_body.reverse()
+            rabbit_line = rabbit_body[0]
+            n = -3
+        rabbit = pygame.draw.rect(dis, black, cardionate_rabbit, rabbit_line)
 
     for i in range(len(list_snake)):
         if i == len(list_snake) - 1:
