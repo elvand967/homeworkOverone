@@ -33,7 +33,7 @@ f_start = False
 snake_body_color = [cd['cobaltgreen'], cd['coldgrey']]
 # При старте змейку соберу из 4-х элементов:
 # - голова красного цвета (эффект открытия/закрытия рта, попробую обеспечить сменой
-# закрашенного квадрата и рамки квадрата толщиной 2 px)
+# закрашенного квадрата и рамки квадрата толщиной 3 px)
 # - тело из трех квадратов (эффект движения усилить поочередной сменой заливки квадратов
 # болотно-зеленым и  темно-серым цветами (cobaltgreen; coldgrey))
 # Движение змейки исполнить сменой элементов координат списка тела змейки,
@@ -47,11 +47,10 @@ snake_body_color = [cd['cobaltgreen'], cd['coldgrey']]
 
 # так-как list.append(x) добавляет новый элемент в конец списка, определимся,
 # что элементы списка (наши составные части змейки) идут от хвоста к голове
-
-list_snake = [[cd['cobaltgreen'], [x - (3 * l), y, l, h]],
-              [cd['coldgrey'], [x - (2 * l), y, l, h]],
-              [cd['cobaltgreen'], [x - l, y, l, h]],
-              [cd['red'], [x, y, l, h]]]
+list_snake = []
+for i in range(-3, 1):
+    list_snake.append([cd['red'], [x + (i * l), y, l, h]])
+print(list_snake)
 
 
 # (!!! переделать исключающий цвет на кортеж цветов)функия генератор цветов, котороя в качестве аргументов принимает...
@@ -93,9 +92,6 @@ while not game_over:
                 x1_change = 0
                 y1_change = h
 
-    # if x1>=800 or x1<0 or y1>=600 or y1<0:
-    #     game_over = True
-
     x += x1_change
     y += y1_change
     dis.fill(cd['white'])
@@ -104,14 +100,6 @@ while not game_over:
     if f_start:
         list_snake.append([cd['red'], [x, y, l, h]])
         list_snake.pop(0)
-
-    # else:
-    #     # моргание головы (открытие рта):
-    #     snake_head = len(list_snake) - 1  # индекс головы
-    #     if list_snake[snake_head][2] != 0:
-    #         list_snake[snake_head][2] = 0
-    #     else:
-    #         list_snake[snake_head][2] = 3
 
     # раскрасим змейку
     snake_body_color.reverse()
@@ -124,11 +112,18 @@ while not game_over:
     # откроем/закроим ротик
     snake_mouth.reverse()
 
+    pygame.draw.rect(dis, (230, 230, 250), [10, 30, W - 20, H - 40], 0)
+    border = pygame.draw.rect(dis, cd['black'], [10, 30, W - 20, H - 40], 3)
+
     for i in range(len(list_snake)):
         if i == len(list_snake) - 1:
-            pygame.draw.rect(dis, list_snake[i][0], list_snake[i][1], snake_mouth[0])
+            snake = pygame.draw.rect(dis, list_snake[i][0], list_snake[i][1], snake_mouth[0])
             continue
         pygame.draw.rect(dis, list_snake[i][0], list_snake[i][1])
+
+    # если голова змейки вышла за пределя границы (фигуры - 'border')
+    if not pygame.Rect.contains(border, snake):
+        game_over = True
 
     pygame.display.update()
     clock.tick(10)
