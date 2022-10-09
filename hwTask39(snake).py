@@ -7,6 +7,7 @@
 
 import sys
 import pygame
+import pygame as pg
 import random
 
 pygame.init()
@@ -37,6 +38,7 @@ snake_body_color = [cobaltgreen, coldgrey]
 rabbit_line = 0
 n = 0  # счетчик тиков для кролика
 f_rabbit = False  # Флаг кролика
+total_rabbits = 0
 cardionate_rabbit = ()
 color_rabbit = ()
 f_start = False
@@ -76,9 +78,13 @@ def fun_rabbit():
 dis = pygame.display.set_mode((L, H))
 pygame.display.set_caption("Snake")
 
+
+
 game_over = False
 
 clock = pygame.time.Clock()
+
+
 
 while True:
     for event in pygame.event.get():
@@ -114,9 +120,15 @@ while True:
         txt1 = t1.render("Game over", True, rainbow['red'])
         dis.blit(txt1, (L // 2 - 100, H // 2 - 90))
 
+    t2 = pygame.font.SysFont('arial', 16)
+    txt2 = t2.render(f'Всего кроликов: {str(total_rabbits)}', True, rainbow['blue'])
+    dis.blit(txt2, (l, h))
+
+
     if f_start:  # начинаем движение
         list_snake.append([rainbow['red'], [x, y, l, h]])
         if list_snake[0][1] == cardionate_rabbit:
+            total_rabbits += 1 # посчитаем кролика
             f_rabbit = False
         else:
             list_snake.pop(0)
@@ -125,7 +137,7 @@ while True:
     snake_mouth.reverse()
 
     # раскрасим змейку
-    snake_body_color.reverse()
+    # snake_body_color.reverse() - не эфективно
 
     for i in range(len(list_snake) - 1):
         if i % 2:
