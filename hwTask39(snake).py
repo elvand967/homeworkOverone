@@ -7,7 +7,6 @@
 
 import sys
 import pygame
-import pygame as pg
 import random
 
 pygame.init()
