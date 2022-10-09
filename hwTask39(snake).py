@@ -49,10 +49,6 @@ f_start = False
 # Движение змейки исполнить сменой элементов координат списка тела змейки,
 # добавлением нового элемента с координатами головы и удалением элемента с координатами хвоста
 # + чередование цветов окраски
-# Задумка: после поедания «кроликов» при дальнейшем движении, квадрат тела змейки на месте кролика
-# увеличить на пару пикселей (как будто проходит по кишечнику),
-# когда очередь дойдет до удаления хвоста на месте кролика (движение), его не удалять а вернуть
-# к нормальному размеру, тем самым увеличив длину змейки.
 
 # так-как list.append(x) добавляет новый элемент в конец списка, определимся,
 # что элементы списка (наши составные части змейки) идут от хвоста к голове
@@ -72,7 +68,7 @@ def fun_color_generator(color_dictionary):  # ...словарь цветов
 # функия генератор кардионат и размеров кролика и его цвета для передачи в pygame.draw.rect()
 def fun_rabbit():
     l1 = random.randrange(l, L - l, l)
-    h1 = random.randrange((4 * h) + 1, H - (4 * h) + 1, h)
+    h1 = random.randrange((4 * h), H - (4 * h), h)
 
     return [l1, h1, l, h]
 
@@ -120,7 +116,10 @@ while True:
 
     if f_start:  # начинаем движение
         list_snake.append([rainbow['red'], [x, y, l, h]])
-        list_snake.pop(0)
+        if list_snake[0][1] == cardionate_rabbit:
+            f_rabbit = False
+        else:
+            list_snake.pop(0)
 
     # откроем/закроим ротик
     snake_mouth.reverse()
@@ -155,6 +154,7 @@ while True:
             snake = pygame.draw.rect(dis, list_snake[i][0], list_snake[i][1], snake_mouth[0])
             continue
         pygame.draw.rect(dis, list_snake[i][0], list_snake[i][1])
+
 
     # если голова змейки вышла за предел границы (фигуры - 'border')
     if not pygame.Rect.contains(border, snake):
