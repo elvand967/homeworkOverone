@@ -5,6 +5,7 @@
 # -Фон
 # -Счётчик очков
 
+import sys
 import pygame
 import random
 
@@ -24,13 +25,14 @@ H = 500  # высота экрана
 # голову змеюки сюда
 x = W // 2  # координаты по горизонтали
 y = H // 2  # координаты по вертикали
-x1_change = 0
-y1_change = 0
+x_change = 0
+y_change = 0
 l = 15  # ширина прямоугольника (квадрата) - елемента тела змейки
 h = 15  # высота прямоугольника (квадрата) -/-
 snake_mouth = [0, 3]  # 3- открыт, 0 - закрыт
 f_start = False
 snake_body_color = [cd['cobaltgreen'], cd['coldgrey']]
+
 # При старте змейку соберу из 4-х элементов:
 # - голова красного цвета (эффект открытия/закрытия рта, попробую обеспечить сменой
 # закрашенного квадрата и рамки квадрата толщиной 3 px)
@@ -44,13 +46,11 @@ snake_body_color = [cd['cobaltgreen'], cd['coldgrey']]
 # когда очередь дойдет до удаления хвоста на месте кролика (движение), его не удалять а вернуть
 # к нормальному размеру, тем самым увеличив длину змейки.
 
-
 # так-как list.append(x) добавляет новый элемент в конец списка, определимся,
 # что элементы списка (наши составные части змейки) идут от хвоста к голове
 list_snake = []
 for i in range(-3, 1):
     list_snake.append([cd['red'], [x + (i * l), y, l, h]])
-print(list_snake)
 
 
 # (!!! переделать исключающий цвет на кортеж цветов)функия генератор цветов, котороя в качестве аргументов принимает...
@@ -71,32 +71,40 @@ game_over = False
 
 clock = pygame.time.Clock()
 
-while not game_over:
+while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            game_over = True
+            pygame.quit()
+            sys.exit()
         if event.type == pygame.KEYDOWN:
             f_start = True  # нажатие любой кнопки - старт игры
             if event.key == pygame.K_ESCAPE:
-                game_over = True
+                pygame.quit()
+                sys.exit()
             elif event.key == pygame.K_LEFT:
-                x1_change = -l
-                y1_change = 0
+                x_change = -l
+                y_change = 0
             elif event.key == pygame.K_RIGHT:
-                x1_change = l
-                y1_change = 0
+                x_change = l
+                y_change = 0
             elif event.key == pygame.K_UP:
-                x1_change = 0
-                y1_change = -h
+                x_change = 0
+                y_change = -h
             elif event.key == pygame.K_DOWN:
-                x1_change = 0
-                y1_change = h
+                x_change = 0
+                y_change = h
 
-    x += x1_change
-    y += y1_change
     dis.fill(cd['white'])
+    pygame.draw.rect(dis, (196, 239, 228), [10, 30, W - 20, H - 40], 0)
 
-    # pygame.draw.rect(dis, cd['red'], [x,y,10,10],2)
+    if not game_over:
+        x += x_change
+        y += y_change
+    else:
+        t1 = pygame.font.SysFont('arial', 48)
+        txt1 = t1.render("Game over", True, cd['red'])
+        dis.blit(txt1, (W // 2 - 100, H // 2 - 90))
+
     if f_start:
         list_snake.append([cd['red'], [x, y, l, h]])
         list_snake.pop(0)
@@ -112,8 +120,7 @@ while not game_over:
     # откроем/закроим ротик
     snake_mouth.reverse()
 
-    pygame.draw.rect(dis, (230, 230, 250), [10, 30, W - 20, H - 40], 0)
-    border = pygame.draw.rect(dis, cd['black'], [10, 30, W - 20, H - 40], 3)
+    border = pygame.draw.rect(dis, (35, 137, 111), [10, 30, W - 20, H - 40], 3)
 
     for i in range(len(list_snake)):
         if i == len(list_snake) - 1:
@@ -121,12 +128,9 @@ while not game_over:
             continue
         pygame.draw.rect(dis, list_snake[i][0], list_snake[i][1])
 
-    # если голова змейки вышла за пределя границы (фигуры - 'border')
+    # если голова змейки вышла за предел границы (фигуры - 'border')
     if not pygame.Rect.contains(border, snake):
         game_over = True
 
     pygame.display.update()
     clock.tick(10)
-
-pygame = quit()
-quit()
