@@ -1,9 +1,9 @@
-# 5655341772:AAEFesP0r7MXMqPPyXYvbeCjtzZQQVnnx2A
+#1922448950:AAEueQO_WmyT1wYrHbyaNV-FmeSirZ6zYy0
 
 import telebot
 from telebot import types
 
-token='5655341772:AAEFesP0r7MXMqPPyXYvbeCjtzZQQVnnx2A'
+token='1922448950:AAEueQO_WmyT1wYrHbyaNV-FmeSirZ6zYy0'
 bot = telebot.TeleBot(token)
 
 
